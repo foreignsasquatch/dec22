@@ -46,6 +46,8 @@ class Main {
 
   public function update() {
     playerA.update();
+    trace(world.all_levels.level_0.l_fg.hasAnyTileAt(playerA.cx, playerA.cy + 1));
+    trace('x: ${playerA.cx} y: ${playerA.cy}');
     playerB.update();
     updateCam();
   }

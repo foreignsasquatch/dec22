@@ -17,7 +17,6 @@ class Player extends Entity {
     if(onFloor && Rl.isKeyPressed(input.JUMP)) dy = -0.5;
 
     dy += 0.02;
-    trace('x: $cx y: $cy');
 
     super.update();
   }

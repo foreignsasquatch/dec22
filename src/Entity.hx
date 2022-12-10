@@ -26,12 +26,12 @@ class Entity {
         xr += dx;
         dx *= 0.8;
 
-        if(map.hasAnyTileAt(cx + 1, cy) && xr >= 0) {
+        if(map.isCoordValid(cx + 1, cy) && map.hasAnyTileAt(cx + 1, cy) && xr >= 0) {
             xr = 0;
             dx = 0;
         }
 
-        if(map.hasAnyTileAt(cx - 1, cy) && xr <= 0) {
+        if(map.isCoordValid(cx - 1, cy) && map.hasAnyTileAt(cx - 1, cy) && xr <= 0) {
             xr = 0;
             dx = 0;
         }
@@ -47,13 +47,13 @@ class Entity {
         dy *= 0.98;
 
         // Ceiling
-        if(map.hasAnyTileAt(cx, cy - 1) && yr <= 0) {
+        if(map.isCoordValid(cx, cy - 1) && map.hasAnyTileAt(cx, cy - 1) && yr <= 0) {
             yr = 0;
             dy = 0;
         }
 
         // Floor
-        if(map.hasAnyTileAt(cx, cy + 1) && yr >= 0) {
+        if(map.isCoordValid(cx, cy + 1) && map.hasAnyTileAt(cx, cy + 1) && yr >= 0) {
             yr = 0;
             dy = 0;
 
