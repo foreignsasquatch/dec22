@@ -1,0 +1,8 @@
+-cp src
+-main Main
+-lib raylib-hx
+-lib ase
+-lib deepnightLibs
+-lib ldtk-haxe-api
+-cpp bin
+-debug
