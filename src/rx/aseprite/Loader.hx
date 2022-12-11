@@ -1,5 +1,7 @@
-class Aseprite {
-  public static function loadAsepriteToTexture(file:String):Rl.Texture {
+package rx.aseprite;
+
+class Loader {
+  public static function loadTexture(file:String):Rl.Texture {
     var aseBytes = sys.io.File.getBytes(file);
     var ase:ase.Ase = ase.Ase.fromBytes(aseBytes);
     var layerIndex:Int = 0;

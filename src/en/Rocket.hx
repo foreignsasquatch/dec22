@@ -1,18 +1,20 @@
 package en;
 
-class Rocket extends Entity {
-  public function new(x:Int, y:Int, map:ldtk.Layer_Tiles) {
-    super(map);
+import rx.aseprite.Loader;
 
-    sprite = Aseprite.loadAsepriteToTexture("res/player_a.aseprite");
+class Rocket extends rx.Entity {
+  public function new(x:Float, y:Float, l:ldtk.Layer_Tiles) {
+    super(x, y, l);
+
+    texture = Loader.loadTexture("res/player_a.aseprite");
     setCoords(x, y);
   }
 
   override function update() {
-    if(Rl.isKeyDown(Rl.Keys.W)) dy  = -0.5;
-    if(Rl.isKeyDown(Rl.Keys.DOWN)) dy  = 0.5;
+    if(Rl.isKeyDown(Rl.Keys.W)) velocity_y  = -0.5;
+    if(Rl.isKeyDown(Rl.Keys.DOWN)) velocity_y  = 0.5;
 
-    dx += 0.03;
+    velocity_x += 0.03;
 
     super.update();
   }
