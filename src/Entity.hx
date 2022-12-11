@@ -11,9 +11,11 @@ class Entity {
     public var xx:Float;
     public var yy:Float;
 
-    // Velocity
     public var dx:Float;
     public var dy:Float;
+
+    public var texSquashX = 1.0;
+    public var texSquashY = 1.0;
 
     public var map:ldtk.Layer_Tiles;
     public var onFloor = false;
@@ -74,7 +76,19 @@ class Entity {
     }
 
     public function draw() {
-        Rl.drawTextureV(sprite, Rl.Vector2.create(xx, yy), Rl.Colors.WHITE);
+        var width = 16;
+        var width_visual = width * texSquashX;
+        var width_difference = width - width_visual;
+        var x_offset = xx + (width_difference / 2);
+
+        var width_visual_y = width * texSquashY;
+        var width_difference_y = width - width_visual_y;
+        var y_offset = yy + (width_difference_y / 2);
+
+        Rl.drawTexturePro(sprite, Rl.Rectangle.create(0, 0, 16, 16), Rl.Rectangle.create(x_offset, y_offset, 16 * texSquashX, 16 * texSquashY), Rl.Vector2.create(0, 0), 0, Rl.Colors.WHITE);
+
+        texSquashX += (1 - texSquashX) * Math.min(1, 0.2 * 0.6);
+        texSquashY += (1 - texSquashY) * Math.min(1, 0.2 * 0.6);
     }
 
     public function setCoords(x, y) {
@@ -84,5 +98,15 @@ class Entity {
         cy = Std.int(yy / 16);
         xr = (xx - cx * 16) / 16;
         yr = (yy - cy * 16) / 16;
+    }
+
+    public function setSquashX(scaleX:Float) {
+        texSquashX = scaleX;
+        texSquashY = 2 - scaleX;
+    }
+
+    public function setSquashY(scaleY:Float) {
+        texSquashX = 2 - scaleY;
+        texSquashY = scaleY;
     }
 }

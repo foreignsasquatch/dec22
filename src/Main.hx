@@ -20,6 +20,8 @@ class Main {
   public var rocketActive:Bool = false;
   public var rocket:Rocket;
 
+  // testing
+
   public function init() {
     Rl.initWindow(1280, 720, "");
     Rl.setTargetFPS(60);
