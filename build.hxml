@@ -5,4 +5,5 @@
 -lib deepnightLibs
 -lib ldtk-haxe-api
 -cpp bin
+-D HXCPP_CPP17
 -debug

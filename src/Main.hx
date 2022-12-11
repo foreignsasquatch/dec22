@@ -1,3 +1,4 @@
+import en.Rocket;
 import en.Player;
 
 class Main {
@@ -13,6 +14,12 @@ class Main {
   public var playerACam:Rl.Camera2D;
   public var playerBCam:Rl.Camera2D;
 
+  // levels
+  // rocket level
+  public var rocketLevel:Bool = true;
+  public var rocketActive:Bool = false;
+  public var rocket:Rocket;
+
   public function init() {
     Rl.initWindow(1280, 720, "");
     Rl.setTargetFPS(60);
@@ -20,14 +27,14 @@ class Main {
     world = new World();
     tilesetTexture = Aseprite.loadAsepriteToTexture("res/tileset.aseprite");
 
-    playerA = new Player(0, 0, "res/player_a.aseprite", {
+    playerA = new Player(world.all_levels.level_0.l_en.all_player[0].cx * 16, world.all_levels.level_0.l_en.all_player[0].cy * 16, "res/player_a.aseprite", {
       LEFT: Rl.Keys.LEFT,
       RIGHT: Rl.Keys.RIGHT,
       JUMP: Rl.Keys.UP,
       INTERACT: Rl.Keys.Z
     }, world.all_levels.level_0.l_fg);
 
-    playerB = new Player(0, 0, "res/player_b.aseprite", {
+    playerB = new Player(world.all_levels.level_0.l_en.all_player[1].cx * 16, world.all_levels.level_0.l_en.all_player[1].cy * 16, "res/player_b.aseprite", {
       LEFT: Rl.Keys.A,
       RIGHT: Rl.Keys.D,
       JUMP: Rl.Keys.W,
@@ -41,13 +48,32 @@ class Main {
     playerACam = Rl.Camera2D.create(Rl.Vector2.create(0, 0), Rl.Vector2.create(playerA.xx, playerA.yy), 0, 2);
     playerBCam = Rl.Camera2D.create(Rl.Vector2.create(0, 0), Rl.Vector2.create(playerB.xx, playerB.yy), 0, 2);
 
-    trace(world.all_levels.level_0.l_fg.json.gridTiles);
+    // rocket level stuff
+    rocket = new Rocket(world.all_levels.level_0.l_en.all_rocket[0].cx * 16, world.all_levels.level_0.l_en.all_rocket[0].cx * 16, world.all_levels.level_0.l_fg);
   }
 
+  var hasTeleportedToRocket = false;
   public function update() {
+    // rocket level updates
+    if(rocketLevel) {
+      if(world.all_levels.level_0.l_en.all_rocket[0].cx == playerA.cx && world.all_levels.level_0.l_en.all_rocket[0].cy == playerA.cy || world.all_levels.level_0.l_en.all_rocket[0].cx == playerB.cx && world.all_levels.level_0.l_en.all_rocket[0].cy == playerB.cy) {
+        rocketActive = true;
+      } else if(world.all_levels.level_0.l_en.all_rocket_end[0].cx == rocket.cx) {
+        rocketActive = false;
+        if(!hasTeleportedToRocket) {
+          playerA.setCoords(rocket.xx, rocket.yy);
+          playerB.setCoords(rocket.xx, rocket.yy);
+          hasTeleportedToRocket = true;
+        }
+      }
+
+      if(rocketActive) {
+        rocket.update();
+      }
+    }
+    // end
+
     playerA.update();
-    trace(world.all_levels.level_0.l_fg.hasAnyTileAt(playerA.cx, playerA.cy + 1));
-    trace('x: ${playerA.cx} y: ${playerA.cy}');
     playerB.update();
     updateCam();
   }
@@ -55,11 +81,17 @@ class Main {
   public function updateCam() {
     playerACam.offset.x = (Rl.getScreenWidth() / 2) / 2;
     playerACam.offset.y = (Rl.getScreenHeight() / 2);
-    playerACam.target = Rl.Vector2.create(playerA.xx, playerA.yy);
 
     playerBCam.offset.x = (Rl.getScreenWidth() / 2) / 2;
     playerBCam.offset.y = (Rl.getScreenHeight() / 2);
-    playerBCam.target = Rl.Vector2.create(playerB.xx, playerB.yy);
+
+    if(!rocketActive) {
+      playerACam.target = Rl.Vector2.create(playerA.xx, playerA.yy);
+      playerBCam.target = Rl.Vector2.create(playerB.xx, playerB.yy);
+    } else if(rocketActive) {
+      playerACam.target = Rl.Vector2.create(rocket.xx, rocket.yy);
+      playerBCam.target = Rl.Vector2.create(rocket.xx, rocket.yy);
+    }
   }
 
   public inline function drawTilemap(layer:ldtk.Layer_Tiles, tilesetTexture:Rl.Texture, tileset:ldtk.Tileset, sizeX:Int, sizeY:Int):Void {
@@ -78,11 +110,18 @@ class Main {
   }
 
   function d() {
-    // playerA.draw();
-    Rl.drawTextureV(playerA.sprite, Rl.Vector2.create(playerA.xx, playerA.yy), Rl.Colors.WHITE);
-    // playerB.draw();
-    Rl.drawTextureV(playerB.sprite, Rl.Vector2.create(playerB.xx, playerB.yy), Rl.Colors.WHITE);
-    drawTilemap(world.all_levels.level_0.l_fg, tilesetTexture, world.all_tilesets.tileset, 16, 16);
+    if(!rocketActive) {
+      playerA.draw();
+      playerB.draw();
+    } else if(rocketActive) {
+      rocket.draw();
+    }
+
+    // rocket level stuff
+    if(rocketLevel) {
+      drawTilemap(world.all_levels.level_0.l_fg, tilesetTexture, world.all_tilesets.tileset, 16, 16);
+    }
+    // end
   }
 
   // Things which must be draw twice
@@ -110,6 +149,7 @@ class Main {
       Rl.clearBackground(Rl.Colors.DARKBLUE);
       Rl.drawTextureRec(screenA.texture, splitScreenRectangle, Rl.Vector2.zero(), Rl.Colors.WHITE);
       Rl.drawTextureRec(screenB.texture, splitScreenRectangle, Rl.Vector2.create(Rl.getScreenWidth() / 2, 0), Rl.Colors.WHITE);
+      if(rocketActive) Rl.drawText("Rocket active", 0, 0, 30, Rl.Colors.GREEN);
     }
     Rl.endDrawing();
   }
