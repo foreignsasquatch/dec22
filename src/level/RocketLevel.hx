@@ -25,6 +25,8 @@ class RocketLevel extends Level {
 
   public var endscreen_texture:Rl.Texture;
 
+  public var fade:Rl.Color = Rl.Color.create(0, 0, 0, 255);
+
   override function init() {
     // tilemap
     ldtk_map = new LdtkMap(sys.io.File.getContent("res/map.ldtk"));
@@ -55,6 +57,8 @@ class RocketLevel extends Level {
     endscreen_texture = Loader.loadTexture("res/endscreen.aseprite");
   }
 
+  var play_death = false;
+  var death_anim_over = false;
   var has_teleported_to_rocket = false;
   override function update() {
     // rocket
@@ -85,14 +89,32 @@ class RocketLevel extends Level {
 
       rocket.velocity_x = 0;
       rocket.velocity_y = 0;
-      
+
+      play_death = true;
+
       is_rocket_active = false;
       rocket.is_colliding = false;
     }
 
-    trace(rocket.is_colliding);
-
     if(is_rocket_active) rocket.update();
+
+    if(play_death) {
+      if(fade.a != 0) {
+        fade.a = fade.a - 5;
+      } else {
+
+      }
+
+      if(fade.a == 0) {
+        death_anim_over = true;
+      }
+
+      if(death_anim_over) {
+        play_death = false;
+        fade.a = 255;
+        death_anim_over = false;
+      }
+    }
 
     // players
     player_a.update();
@@ -103,11 +125,15 @@ class RocketLevel extends Level {
       if(d.cx == player_a.cell_x && d.cy == player_a.cell_y) {
         player_a.cell_x = ldtk_map.all_levels.level_0.l_en.all_player[0].cx;
         player_a.cell_y = ldtk_map.all_levels.level_0.l_en.all_player[0].cy;
+
+        play_death = true;
       }
 
       if(d.cx == player_b.cell_x && d.cy == player_b.cell_y) {
         player_b.cell_x = ldtk_map.all_levels.level_0.l_en.all_player[1].cx;
         player_b.cell_y = ldtk_map.all_levels.level_0.l_en.all_player[1].cy;
+
+        play_death = true;
       }
     }
   }
@@ -156,6 +182,7 @@ class RocketLevel extends Level {
       Rl.clearBackground(Rl.Colors.DARKBLUE);
       Rl.drawTextureRec(screen_a.texture, split_screen_rectangle, Rl.Vector2.zero(), Rl.Colors.WHITE);
       Rl.drawTextureRec(screen_b.texture, split_screen_rectangle, Rl.Vector2.create(Rl.getScreenWidth() / 2, 0), Rl.Colors.WHITE);
+      if(play_death) Rl.drawRectangle(0, 0, Rl.getScreenWidth(), Rl.getScreenHeight(), fade);
     }
     Rl.endDrawing();
   }

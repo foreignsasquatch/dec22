@@ -78,5 +78,30 @@ class Rocket extends rx.Entity {
 
     x = (cell_x + cell_ratio_x) * 16;
     y = (cell_y + cell_ratio_y) * 16;
+
+    if(is_colliding) {
+      color = Rl.Colors.RED;
+    } else {
+      color = Rl.Colors.WHITE;
+    }
+  }
+
+  var color = Rl.Colors.WHITE;
+  override function draw() {
+    var size = 16;
+
+    var width_visual = size * squash_x;
+    var width_difference = size - width_visual;
+    var x_offset = x + (width_difference / 2);
+
+    var height_visual = size * squash_y;
+    var width_difference_y = size - height_visual;
+    var y_offset = y + (width_difference_y / 2);
+
+    // Rl.drawTexture(texture, Std.int(x), Std.int(y), Rl.Colors.WHITE);
+    Rl.drawTexturePro(texture, Rl.Rectangle.create(texture_x_incr * 16, texture_y_incr * 16, texture_width, texture_height), Rl.Rectangle.create(x_offset, y_offset, 16 * squash_x, 16 * squash_y), Rl.Vector2.create(0, 0), 0, color);
+
+    squash_x += (1 - squash_x) * Math.min(1, 0.2 * 0.6);
+    squash_y += (1 - squash_y) * Math.min(1, 0.2 * 0.6);
   }
 }
