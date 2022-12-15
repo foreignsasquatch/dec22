@@ -19,8 +19,8 @@ class Rocket extends rx.Entity {
     cell_ratio_x += velocity_x;
     velocity_x *= friction_x;
 
-    if(collision_layer.isCoordValid(cell_x + 1,cell_y) && collision_layer.hasAnyTileAt(cell_x + 1,cell_y) && cell_ratio_x >= 0.5) {
-      cell_ratio_x = 0.5;
+    if(collision_layer.isCoordValid(cell_x + 1,cell_y) && collision_layer.hasAnyTileAt(cell_x + 1,cell_y) && cell_ratio_x >= 0.25) {
+      cell_ratio_x = 0.25;
       velocity_x = 0;
 
       is_colliding = true;
@@ -28,8 +28,8 @@ class Rocket extends rx.Entity {
       is_colliding = false;
     }
 
-    if(collision_layer.isCoordValid(cell_x - 1,cell_y) && collision_layer.hasAnyTileAt(cell_x - 1,cell_y) && cell_ratio_x <= 0.5) {
-      cell_ratio_x = 0.5;
+    if(collision_layer.isCoordValid(cell_x - 1,cell_y) && collision_layer.hasAnyTileAt(cell_x - 1,cell_y) && cell_ratio_x <= 0.25) {
+      cell_ratio_x = 0.25;
       velocity_x = 0;
     
       is_colliding = true;
@@ -48,8 +48,8 @@ class Rocket extends rx.Entity {
     velocity_y *= friction_y;
 
     // top
-    if(collision_layer.isCoordValid(cell_x,cell_y - 1) && collision_layer.hasAnyTileAt(cell_x,cell_y - 1) && cell_ratio_y <= 0.5) {
-      cell_ratio_y = 0.5;
+    if(collision_layer.isCoordValid(cell_x,cell_y - 1) && collision_layer.hasAnyTileAt(cell_x,cell_y - 1) && cell_ratio_y <= 0.25) {
+      cell_ratio_y = 0.25;
       velocity_y = 0;
 
       is_colliding = true;
@@ -58,8 +58,8 @@ class Rocket extends rx.Entity {
     }
 
     // bottom
-    if(collision_layer.isCoordValid(cell_x,cell_y + 1) && collision_layer.hasAnyTileAt(cell_x,cell_y + 1) && cell_ratio_y >= 0.5) {
-      cell_ratio_y = 0.5;
+    if(collision_layer.isCoordValid(cell_x,cell_y + 1) && collision_layer.hasAnyTileAt(cell_x,cell_y + 1) && cell_ratio_y >= 0.25) {
+      cell_ratio_y = 0.25;
       velocity_y = 0;
 
       is_on_floor = true;
