@@ -43,11 +43,11 @@ class Player extends Entity {
 
     // Movement
     if(Rl.isKeyDown(input.LEFT)) {
-      velocity_x = -0.18;
+      velocity_x = -0.16;
       texture_width = -13;
     }
     if(Rl.isKeyDown(input.RIGHT)) {
-      velocity_x = 0.18;
+      velocity_x = 0.16;
       texture_width = 13;
     }
 
@@ -55,7 +55,7 @@ class Player extends Entity {
     if(is_on_floor && Rl.isKeyPressed(input.JUMP) || coyote_timer != 0 && Rl.isKeyPressed(input.JUMP)) {
       // jumping stretch
       setSquashX(0.5);
-      velocity_y = -0.5;
+      velocity_y = -0.55;
     }
 
     // landing squash
