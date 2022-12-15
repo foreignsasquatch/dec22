@@ -19,7 +19,7 @@ class Rocket extends rx.Entity {
     cell_ratio_x += velocity_x;
     velocity_x *= friction_x;
 
-    if(collision_layer.isCoordValid(cell_x + 1,cell_y) && collision_layer.hasAnyTileAt(cell_x + 1,cell_y) && cell_ratio_x >= 0.25) {
+    if(collision_layer.isCoordValid(cell_x,cell_y) && collision_layer.hasAnyTileAt(cell_x,cell_y) && cell_ratio_x >= 0.25) {
       cell_ratio_x = 0.25;
       velocity_x = 0;
 
@@ -28,14 +28,14 @@ class Rocket extends rx.Entity {
       is_colliding = false;
     }
 
-    if(collision_layer.isCoordValid(cell_x - 1,cell_y) && collision_layer.hasAnyTileAt(cell_x - 1,cell_y) && cell_ratio_x <= 0.25) {
-      cell_ratio_x = 0.25;
-      velocity_x = 0;
+    // if(collision_layer.isCoordValid(cell_x - 1,cell_y) && collision_layer.hasAnyTileAt(cell_x - 1,cell_y) && cell_ratio_x <= 0.25) {
+    //   cell_ratio_x = 0.25;
+    //   velocity_x = 0;
     
-      is_colliding = true;
-    } else {
-      // is_colliding = false;
-    }
+    //   is_colliding = true;
+    // } else {
+    //   // is_colliding = false;
+    // }
 
     while(cell_ratio_x > 1) {
       cell_ratio_x--; cell_x++;
@@ -48,7 +48,7 @@ class Rocket extends rx.Entity {
     velocity_y *= friction_y;
 
     // top
-    if(collision_layer.isCoordValid(cell_x,cell_y - 1) && collision_layer.hasAnyTileAt(cell_x,cell_y - 1) && cell_ratio_y <= 0.25) {
+    if(collision_layer.isCoordValid(cell_x,cell_y) && collision_layer.hasAnyTileAt(cell_x,cell_y) && cell_ratio_y <= 0.25) {
       cell_ratio_y = 0.25;
       velocity_y = 0;
 
@@ -58,16 +58,16 @@ class Rocket extends rx.Entity {
     }
 
     // bottom
-    if(collision_layer.isCoordValid(cell_x,cell_y + 1) && collision_layer.hasAnyTileAt(cell_x,cell_y + 1) && cell_ratio_y >= 0.25) {
-      cell_ratio_y = 0.25;
-      velocity_y = 0;
+    // if(collision_layer.isCoordValid(cell_x,cell_y + 1) && collision_layer.hasAnyTileAt(cell_x,cell_y + 1) && cell_ratio_y >= 0.25) {
+    //   cell_ratio_y = 0.25;
+    //   velocity_y = 0;
 
-      is_on_floor = true;
-      is_colliding = true;
-    } else {
-      is_on_floor = false;
-      // is_colliding = false;
-    }
+    //   is_on_floor = true;
+    //   is_colliding = true;
+    // } else {
+    //   is_on_floor = false;
+    //   // is_colliding = false;
+    // }
 
     while(cell_ratio_y > 1) {
       cell_ratio_y--;cell_y++;

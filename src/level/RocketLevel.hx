@@ -27,7 +27,7 @@ class RocketLevel extends Level {
 
   override function init() {
     // tilemap
-    ldtk_map = new LdtkMap();
+    ldtk_map = new LdtkMap(sys.io.File.getContent("res/map.ldtk"));
     tilemap_texture = Loader.loadTexture("res/tileset.aseprite");
 
     // en
@@ -45,7 +45,7 @@ class RocketLevel extends Level {
       INTERACT: Rl.Keys.SPACE
     }, ldtk_map.all_levels.level_0.l_fg);
 
-    rocket = new Rocket(ldtk_map.all_levels.level_0.l_en.all_rocket[2].cx * 16, ldtk_map.all_levels.level_0.l_en.all_rocket[2].cy * 16, ldtk_map.all_levels.level_0.l_fg);
+    rocket = new Rocket(ldtk_map.all_levels.level_0.l_en.all_rocket[1].cx * 16, ldtk_map.all_levels.level_0.l_en.all_rocket[1].cy * 16, ldtk_map.all_levels.level_0.l_fg);
 
     // split screen
     split_screen_rectangle = Rl.Rectangle.create(0, 0, Rl.getScreenWidth() / 2, -Rl.getScreenHeight());
@@ -82,6 +82,9 @@ class RocketLevel extends Level {
       
       player_b.cell_x = ldtk_map.all_levels.level_0.l_en.all_player[1].cx;
       player_b.cell_y = ldtk_map.all_levels.level_0.l_en.all_player[1].cy;
+
+      rocket.velocity_x = 0;
+      rocket.velocity_y = 0;
       
       is_rocket_active = false;
       rocket.is_colliding = false;
