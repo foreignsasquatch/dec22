@@ -3,7 +3,12 @@ package rx;
 import ldtk.Layer_Tiles;
 
 class Entity {
+  // texture
   public var texture:Rl.Texture;
+  public var texture_width:Int = 16;
+  public var texture_height:Int = 16;
+  public var texture_x_incr:Int = 0;
+  public var texture_y_incr:Int = 0;
 
   // grid coordinates
   public var cell_x:Int;
@@ -40,18 +45,24 @@ class Entity {
 
   public function update() {
     cell_ratio_x += velocity_x;
-    velocity_x *= 0.8;
+    velocity_x *= friction_x;
 
     if(collision_layer.isCoordValid(cell_x + 1,cell_y) && collision_layer.hasAnyTileAt(cell_x + 1,cell_y) && cell_ratio_x >= 0) {
       cell_ratio_x = 0;
       velocity_x = 0;
 
       is_colliding = true;
+    } else {
+      is_colliding = false;
     }
 
     if(collision_layer.isCoordValid(cell_x - 1,cell_y) && collision_layer.hasAnyTileAt(cell_x - 1,cell_y) && cell_ratio_x <= 0) {
       cell_ratio_x = 0;
       velocity_x = 0;
+    
+      is_colliding = true;
+    } else {
+      is_colliding = false;
     }
 
     while(cell_ratio_x > 1) {
@@ -62,12 +73,16 @@ class Entity {
     }
 
     cell_ratio_y += velocity_y;
-    velocity_y *= 0.98;
+    velocity_y *= friction_y;
 
     // top
     if(collision_layer.isCoordValid(cell_x,cell_y - 1) && collision_layer.hasAnyTileAt(cell_x,cell_y - 1) && cell_ratio_y <= 0) {
       cell_ratio_y = 0;
       velocity_y = 0;
+
+      is_colliding = true;
+    } else {
+      is_colliding = false;
     }
 
     // bottom
@@ -76,8 +91,10 @@ class Entity {
       velocity_y = 0;
 
       is_on_floor = true;
+      is_colliding = true;
     } else {
       is_on_floor = false;
+      is_colliding = false;
     }
 
     while(cell_ratio_y > 1) {
@@ -102,7 +119,8 @@ class Entity {
     var width_difference_y = size - height_visual;
     var y_offset = y + (width_difference_y / 2);
     
-    Rl.drawTexturePro(texture, Rl.Rectangle.create(0, 0, 16, 16), Rl.Rectangle.create(x_offset, y_offset, 16 * squash_x, 16 * squash_y), Rl.Vector2.create(0, 0), 0, Rl.Colors.WHITE);
+    // Rl.drawTexture(texture, Std.int(x), Std.int(y), Rl.Colors.WHITE);
+    Rl.drawTexturePro(texture, Rl.Rectangle.create(texture_x_incr * 16, texture_y_incr * 16, texture_width, texture_height), Rl.Rectangle.create(x_offset, y_offset, 16 * squash_x, 16 * squash_y), Rl.Vector2.create(0, 0), 0, Rl.Colors.WHITE);
     
     squash_x += (1 - squash_x) * Math.min(1, 0.2 * 0.6);
     squash_y += (1 - squash_y) * Math.min(1, 0.2 * 0.6);

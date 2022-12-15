@@ -10,7 +10,7 @@ class LdtkHelper {
                 var x = c * sizeX;
                 var y = r * sizeY;
 
-                Rl.drawTextureRec(tilesetTexture, Rl.Rectangle.create(tileset.getAtlasX(tilesToDraw.tileId), tileset.getAtlasY(tilesToDraw.tileId), sizeX, sizeY), Rl.Vector2.create(x, y), Rl.Colors.WHITE);
+                Rl.drawTextureRec(tilesetTexture, Rl.Rectangle.create(tileset.getAtlasX(tilesToDraw.tileId), tileset.getAtlasY(tilesToDraw.tileId), 16, 16), Rl.Vector2.create(x, y), Rl.Colors.WHITE);
             }
         }
     }
