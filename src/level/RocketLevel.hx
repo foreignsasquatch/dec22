@@ -87,7 +87,7 @@ class RocketLevel extends Level {
       rocket.is_colliding = false;
     }
 
-    // trace(rocket.is_colliding);
+    trace(rocket.is_colliding);
 
     if(is_rocket_active) rocket.update();
 

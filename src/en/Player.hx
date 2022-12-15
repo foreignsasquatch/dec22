@@ -37,8 +37,6 @@ class Player extends Entity {
       coyote_timer = 0.2;
     }
 
-    trace(coyote_timer);
-
     // idle animation
     if(velocity_x == 0 && velocity_y == 0) {
     }
