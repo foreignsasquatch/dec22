@@ -13,8 +13,13 @@ class Game extends Application {
     super.init();
   }
 
+  var pause = false;
   override function update() {
-    super.update();
+    if(!pause)
+      current_level.update();
+
+    if(Rl.isKeyPressed(Rl.Keys.F5))
+      pause = !pause;
   }
 
   override function draw() {
