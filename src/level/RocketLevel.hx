@@ -29,16 +29,17 @@ class RocketLevel extends Level {
   public var fade_a:Rl.Color = Rl.Color.create(0, 0, 0, 255);
   public var fade_b:Rl.Color = Rl.Color.create(0, 0, 0, 255);
 
-  public var bg:Rl.Texture;
-  public var bg_b:Rl.Texture;
+  public var level_name_timer:Float = 0.5;
+  public var level_name_fade:Rl.Color = Rl.Colors.WHITE;
+
+  public var separator:Rl.Texture;
 
   override function init() {
     // tilemap
     ldtk_map = new LdtkMap(sys.io.File.getContent("res/map.ldtk"));
     tilemap_texture = Loader.loadTexture("res/tileset.aseprite");
 
-    bg = Loader.loadTexture("res/bg.aseprite");
-    bg_b = Loader.loadTexture("res/bg_b.aseprite");
+    separator = Loader.loadTexture("res/separator.aseprite");
 
     // en
     player_a = new Player(ldtk_map.all_levels.level_0.l_en.all_player[0].cx * 16, ldtk_map.all_levels.level_0.l_en.all_player[0].cy * 16, "res/player_a_spr.aseprite", {
@@ -187,7 +188,7 @@ class RocketLevel extends Level {
     // Player A view
     Rl.beginTextureMode(screen_a);
     Rl.clearBackground(Rl.Colors.BLACK);
-    Rl.drawTexture(bg_b, 0, 0, Rl.Colors.WHITE);
+    Rl.drawTexture(LargeAssets.bg_b, 0, 0, Rl.Colors.WHITE);
 
     Rl.beginMode2D(player_a.camera);
     {
@@ -210,7 +211,7 @@ class RocketLevel extends Level {
     // Player B view
     Rl.beginTextureMode(screen_b);
     Rl.clearBackground(Rl.Colors.BLACK);
-    Rl.drawTexture(bg, 0, 0, Rl.Colors.WHITE);
+    Rl.drawTexture(LargeAssets.bg, 0, 0, Rl.Colors.WHITE);
 
     Rl.beginMode2D(player_b.camera);
     {
@@ -235,7 +236,12 @@ class RocketLevel extends Level {
       Rl.clearBackground(Rl.Colors.BLACK);
       Rl.drawTextureRec(screen_a.texture, split_screen_rectangle, Rl.Vector2.zero(), Rl.Colors.WHITE);
       Rl.drawTextureRec(screen_b.texture, split_screen_rectangle, Rl.Vector2.create(Rl.getScreenWidth() / 2, 0), Rl.Colors.WHITE);
+      Rl.drawTexture(separator, Std.int(Rl.getScreenWidth() / 2) - 10, 0, Rl.Colors.WHITE);
+
       if(play_death) Rl.drawRectangle(0, 0, Rl.getScreenWidth(), Rl.getScreenHeight(), fade);
+      if(!(level_name_timer <= 0)) Rl.drawText("Level 1: Dream", Std.int((Rl.getScreenWidth() / 2)) - 150, 0, 50, level_name_fade);
+      level_name_timer -= 0.01;
+      level_name_fade.a = level_name_fade.a - 4;
     }
     Rl.endDrawing();
   }

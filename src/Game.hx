@@ -5,6 +5,8 @@ class Game extends Application {
   public var rocketLevel:RocketLevel;
 
   override function init() {
+    LargeAssets.load();
+
     rocketLevel = new RocketLevel();
     current_level = rocketLevel;
 
