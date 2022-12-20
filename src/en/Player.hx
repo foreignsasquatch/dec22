@@ -10,6 +10,8 @@ class Player extends Entity {
   public var is_just_on_floor = false;
   public var coyote_timer = 0.2;
 
+  public var can_move = true;
+
   public function new(x:Float, y:Float, f:String, i:Input, l:ldtk.Layer_Tiles) {
     super(x, y, l);
     input = i;
@@ -41,6 +43,7 @@ class Player extends Entity {
     if(velocity_x == 0 && velocity_y == 0) {
     }
 
+    if(can_move) {
     // Movement
     if(Rl.isKeyDown(input.LEFT)) {
       velocity_x = -0.16;
@@ -57,6 +60,7 @@ class Player extends Entity {
       setSquashX(0.5);
       velocity_y = -0.55;
     }
+  }
 
     // landing squash
     if(is_on_floor) {

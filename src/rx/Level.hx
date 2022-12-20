@@ -1,6 +1,8 @@
 package rx;
 
 class Level {
+  public var done = false;
+
   public function init() {
   }
 

@@ -1,5 +1,6 @@
 package level;
 
+import rx.Application;
 import rx.tilemap.LdtkHelper;
 import rx.aseprite.Loader;
 import rx.Level;
@@ -88,6 +89,9 @@ class RocketLevel extends Level {
         player_b.setCoords(rocket.x, rocket.y);
         has_teleported_to_rocket = true;
       }
+
+      done = true;
+      this.close();
     }
 
     if(rocket.is_colliding) {
@@ -247,6 +251,9 @@ class RocketLevel extends Level {
   }
 
   override function close() {
+    player_a = null;
+    player_b = null;
+
     Rl.unloadRenderTexture(screen_a);
     Rl.unloadRenderTexture(screen_b);
   }

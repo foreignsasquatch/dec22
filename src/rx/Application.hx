@@ -2,7 +2,7 @@ package rx;
 
 // Pretty simple code.
 class Application {
-  public var current_level:Level;
+  public static var current_level:Level;
 
   public function init() {
     current_level.init();
